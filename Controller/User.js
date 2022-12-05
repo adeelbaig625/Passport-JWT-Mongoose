@@ -35,7 +35,15 @@ class UserController {
         next(AppError.unauthorized("Invalid credentials"));
       }
       const userToken = await user.getSignedJwtToken();
+      user.password = undefined;
       return res.status(200).send({ user, userToken });
+    } catch (err) {
+      next(err);
+    }
+  };
+  profile = async (req, res, next) => {
+    try {
+      return res.status(200).send(req.user);
     } catch (err) {
       next(err);
     }
